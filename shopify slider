@@ -1,0 +1,57 @@
+
+
+<script>
+   let para = document.createElement("p");
+            let total_item = document.querySelectorAll(".cstm_cls");
+   console.log(total_item.length, "uu");
+
+   setTimeout(() => {
+     let slick_next = document.querySelector(".wrapper-nav .slick-next");
+
+     if (!slick_next) {
+       console.log("slick-next button not found");
+       return;
+     }
+
+     slick_next.addEventListener("click", () => {
+       let item_nav = document.querySelector(".wrapper-nav .slick-active");
+
+       if (item_nav && item_nav.getAttribute("data-slick-index")) {
+       window.result = +item_nav.getAttribute("data-slick-index") + 1 + "/" + total_item.length;
+         console.log(result);
+
+
+         let item_count = document.querySelector(".wrapper-nav .slider-nav");
+         console.log(item_count);
+
+         if (item_count) {
+           para.innerHTML = result;
+           item_count.appendChild(para);
+         } else {
+           console.log("Element not found: .slider-nav");
+         }
+       }
+     });
+   }, 2000);
+  
+  document.addEventListener('DOMContentLoaded',()=>{
+    setTimeout(()=>{
+      let item_nav = document.querySelector(".wrapper-nav .slick-active");
+
+       if (item_nav && item_nav.getAttribute("data-slick-index")) {
+       let result = +item_nav.getAttribute("data-slick-index") + 1 + "/" + total_item.length;
+         console.log(result);
+          let item_count = document.querySelector(".wrapper-nav .slider-nav");
+         console.log(item_count);
+
+         if (item_count) {
+           para.innerHTML = result;
+           item_count.appendChild(para);
+         } else {
+           console.log("Element not found: .slider-nav");
+         }
+       }
+    },2000)
+
+  })
+</script>
