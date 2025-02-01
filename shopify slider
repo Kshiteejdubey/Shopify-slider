@@ -1,78 +1,132 @@
-slider counter shown below
+slider counter at the place of image. art carat product page
 
-let para = document.createElement("p");
-let total_item = document.querySelectorAll(".cstm_cls");
-console.log(total_item.length, "uu");
 
-setTimeout(() => {
-  let slick_next = document.querySelector(".wrapper-nav .slick-next");
-  let slick_prev = document.querySelector(".wrapper-nav .slick-prev");
 
-  if (!slick_next || !slick_prev) {
-    console.log("slick-next or slick-prev button not found");
-    return;
+@media(max-width: 992px){
+            .slick-initialized .cstm_cls{
+        display:none;
+      }
+        }
+
+     .cstm_kshiteej_slider {
+        line-height: 3.5rem;
+        width: 4rem;
+        background: gray;
+        margin: auto;
+        border: 2px solid gray;
+        color: white;
+        text-align: center;
+        border-radius: 100%;
+        height: 4rem;
+       font-weight:900;
+       font-size:1.2rem;
+      }
+     .product-img-box .slick-arrow.slick-next{
+           right: 30% !important;
+       text-align: center !important;
+     }
+     .kd .slick-next{
+       opacity: 1;
+       position: absolute;
+       pointer-events: auto;
+       right: 30%;
+       width: 3rem;
+       height: 3rem;
+       background: gray !important;
+       color: white !important;
+       text-align: center;
+     }
+    .kd .slick-prev {
+       opacity: 0.5;
+       pointer-events: none;
+       width: 3rem;
+       height: 3rem;
+       background: gray !important;
+       border: 1px solid gray !important;
+       color: white !important;
+     }
+    .product-img-box .slick-arrow.slick-prev {
+      left: 30% !important;
+      text-align: center !important;
   }
+</style>
 
-  function updateIndexDisplay() {
-    let item_nav = document.querySelector(".wrapper-nav .slick-active");
+<script>
+    let para = document.createElement("p");
+  para.setAttribute('class','cstm_kshiteej_slider')
+  let total_item = document.querySelectorAll(".cstm_cls");
+  console.log(total_item.length, "uu");
 
-    if (item_nav && item_nav.getAttribute("data-slick-index")) {
-      let currentIndex = +item_nav.getAttribute("data-slick-index") + 1;
-      let result = currentIndex + " / " + total_item.length;
-      console.log(result);
-
-      let item_count = document.querySelector(".wrapper-nav .slider-nav");
-      console.log(item_count);
-
-      if (item_count) {
-        para.innerHTML = result;
-        item_count.innerHTML = ""; // Clear previous content
-        item_count.appendChild(para); // Append only once
-      } else {
-        console.log("Element not found: .slider-nav");
-      }
-
-      // Disable "Next" button if it's the last item
-      if (currentIndex === total_item.length) {
-        slick_next.disabled = true;
-        slick_next.style.opacity = "0.5"; // Optional: Grey out button
-        slick_next.style.pointerEvents = "none"; // Prevent clicking
-      } else {
-        slick_next.disabled = false;
-        slick_next.style.opacity = "1";
-        slick_next.style.pointerEvents = "auto";
-      }
-
-      // Disable "Prev" button if it's the first item
-      if (currentIndex === 1) {
-        slick_prev.disabled = true;
-        slick_prev.style.opacity = "0.5"; // Grey out button
-        slick_prev.style.pointerEvents = "none"; // Prevent clicking
-      } else {
-        slick_prev.disabled = false;
-        slick_prev.style.opacity = "1";
-        slick_prev.style.pointerEvents = "auto";
-      }
+  function initializeSliderFunctions() {
+    if (window.innerWidth > 992) {
+      return;
     }
+
+    setTimeout(() => {
+      let slick_next = document.querySelector(".wrapper-nav .slick-next");
+      let slick_prev = document.querySelector(".wrapper-nav .slick-prev");
+
+      if (!slick_next || !slick_prev) {
+        console.log("slick-next or slick-prev button not found");
+        return;
+      }
+
+      function updateIndexDisplay() {
+        let item_nav = document.querySelector(".wrapper-nav .slick-active");
+
+        if (item_nav && item_nav.getAttribute("data-slick-index")) {
+          let currentIndex = +item_nav.getAttribute("data-slick-index") + 1;
+          let result = currentIndex + " / " + total_item.length;
+          console.log(result);
+
+          let item_count = document.querySelector(".wrapper-nav .slider-nav");
+          console.log(item_count);
+
+          if (item_count) {
+            para.innerHTML = result;
+            item_count.appendChild(para);
+          } else {
+            console.log("Element not found: .slider-nav");
+          }
+
+          if (currentIndex === total_item.length) {
+            slick_next.disabled = true;
+            slick_next.style.opacity = "0.5";
+            slick_next.style.pointerEvents = "none";
+          } else {
+            slick_next.disabled = false;
+            slick_next.style.opacity = "1";
+            slick_next.style.pointerEvents = "auto";
+          }
+
+          if (currentIndex === 1) {
+            slick_prev.disabled = true;
+            slick_prev.style.opacity = "0.5";
+            slick_prev.style.pointerEvents = "none";
+          } else {
+            slick_prev.disabled = false;
+            slick_prev.style.opacity = "1";
+            slick_prev.style.pointerEvents = "auto";
+          }
+        }
+      }
+
+      updateIndexDisplay();
+
+      slick_next.addEventListener("click", () => {
+        setTimeout(updateIndexDisplay, 100);
+      });
+
+      slick_prev.addEventListener("click", () => {
+        setTimeout(updateIndexDisplay, 100);
+      });
+
+    }, 6000);
   }
-
-  // Initialize count when the page loads
-  updateIndexDisplay();
-
-  // Update count when "Next" button is clicked
-  slick_next.addEventListener("click", () => {
-    setTimeout(updateIndexDisplay, 100); // Delay ensures new slide is active
+  document.addEventListener("DOMContentLoaded", () => {
+    initializeSliderFunctions();
   });
 
-  // Update count when "Prev" button is clicked
-  slick_prev.addEventListener("click", () => {
-    setTimeout(updateIndexDisplay, 100); // Delay ensures new slide is active
+  window.addEventListener("resize", () => {
+    initializeSliderFunctions();
   });
-
-}, 6000);
-
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    updateIndexDisplay();
-  }, 2000);
-});
