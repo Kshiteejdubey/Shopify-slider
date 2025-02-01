@@ -1,57 +1,78 @@
+slider counter shown below
 
+let para = document.createElement("p");
+let total_item = document.querySelectorAll(".cstm_cls");
+console.log(total_item.length, "uu");
 
-<script>
-   let para = document.createElement("p");
-            let total_item = document.querySelectorAll(".cstm_cls");
-   console.log(total_item.length, "uu");
+setTimeout(() => {
+  let slick_next = document.querySelector(".wrapper-nav .slick-next");
+  let slick_prev = document.querySelector(".wrapper-nav .slick-prev");
 
-   setTimeout(() => {
-     let slick_next = document.querySelector(".wrapper-nav .slick-next");
+  if (!slick_next || !slick_prev) {
+    console.log("slick-next or slick-prev button not found");
+    return;
+  }
 
-     if (!slick_next) {
-       console.log("slick-next button not found");
-       return;
-     }
+  function updateIndexDisplay() {
+    let item_nav = document.querySelector(".wrapper-nav .slick-active");
 
-     slick_next.addEventListener("click", () => {
-       let item_nav = document.querySelector(".wrapper-nav .slick-active");
+    if (item_nav && item_nav.getAttribute("data-slick-index")) {
+      let currentIndex = +item_nav.getAttribute("data-slick-index") + 1;
+      let result = currentIndex + " / " + total_item.length;
+      console.log(result);
 
-       if (item_nav && item_nav.getAttribute("data-slick-index")) {
-       window.result = +item_nav.getAttribute("data-slick-index") + 1 + "/" + total_item.length;
-         console.log(result);
+      let item_count = document.querySelector(".wrapper-nav .slider-nav");
+      console.log(item_count);
 
+      if (item_count) {
+        para.innerHTML = result;
+        item_count.innerHTML = ""; // Clear previous content
+        item_count.appendChild(para); // Append only once
+      } else {
+        console.log("Element not found: .slider-nav");
+      }
 
-         let item_count = document.querySelector(".wrapper-nav .slider-nav");
-         console.log(item_count);
+      // Disable "Next" button if it's the last item
+      if (currentIndex === total_item.length) {
+        slick_next.disabled = true;
+        slick_next.style.opacity = "0.5"; // Optional: Grey out button
+        slick_next.style.pointerEvents = "none"; // Prevent clicking
+      } else {
+        slick_next.disabled = false;
+        slick_next.style.opacity = "1";
+        slick_next.style.pointerEvents = "auto";
+      }
 
-         if (item_count) {
-           para.innerHTML = result;
-           item_count.appendChild(para);
-         } else {
-           console.log("Element not found: .slider-nav");
-         }
-       }
-     });
-   }, 2000);
-  
-  document.addEventListener('DOMContentLoaded',()=>{
-    setTimeout(()=>{
-      let item_nav = document.querySelector(".wrapper-nav .slick-active");
+      // Disable "Prev" button if it's the first item
+      if (currentIndex === 1) {
+        slick_prev.disabled = true;
+        slick_prev.style.opacity = "0.5"; // Grey out button
+        slick_prev.style.pointerEvents = "none"; // Prevent clicking
+      } else {
+        slick_prev.disabled = false;
+        slick_prev.style.opacity = "1";
+        slick_prev.style.pointerEvents = "auto";
+      }
+    }
+  }
 
-       if (item_nav && item_nav.getAttribute("data-slick-index")) {
-       let result = +item_nav.getAttribute("data-slick-index") + 1 + "/" + total_item.length;
-         console.log(result);
-          let item_count = document.querySelector(".wrapper-nav .slider-nav");
-         console.log(item_count);
+  // Initialize count when the page loads
+  updateIndexDisplay();
 
-         if (item_count) {
-           para.innerHTML = result;
-           item_count.appendChild(para);
-         } else {
-           console.log("Element not found: .slider-nav");
-         }
-       }
-    },2000)
+  // Update count when "Next" button is clicked
+  slick_next.addEventListener("click", () => {
+    setTimeout(updateIndexDisplay, 100); // Delay ensures new slide is active
+  });
 
-  })
-</script>
+  // Update count when "Prev" button is clicked
+  slick_prev.addEventListener("click", () => {
+    setTimeout(updateIndexDisplay, 100); // Delay ensures new slide is active
+  });
+
+}, 6000);
+
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    updateIndexDisplay();
+  }, 2000);
+});
